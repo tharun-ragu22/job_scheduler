@@ -1,0 +1,24 @@
+AC1
+Given a user wants to create a task
+When they submit the required information for the task
+Then the system accepts the task and schedules it for processing
+
+AC2
+Given a task has been scheduled
+When the system processes the task
+Then it completes successfully and records the outcome
+
+AC2
+Given a user submits a task with missing or invalid information
+When the system evaluates the task
+Then it rejects the task and provides a clear explanation
+
+AC3
+Given multiple tasks are scheduled
+When the system executes the tasks
+Then all tasks are processed correctly without interfering with each other
+
+AC4
+Given a task has ran successfully
+When the user looks for the result from this task
+Then they should be able to find it

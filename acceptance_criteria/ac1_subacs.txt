@@ -1,0 +1,19 @@
+AC1
+Given a user wants to create a task
+When they submit the required information for the task
+Then the system accepts the task and schedules it for processing
+
+SubAC1
+Given a user wants to send an email
+When they submit a request to send an email
+Then the system accepts the task and schedules it for processing
+
+SubAC2
+Given a user wants to make an API request
+When they submit a request to send the request
+Then the system accepts the request and schedules it for processing
+
+SubAC3
+Given a user wants to run a CRON job
+When they submit a request to run the job
+Then the system accepts the task and schedules it for processing

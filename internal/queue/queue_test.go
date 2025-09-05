@@ -1,39 +1,62 @@
 package queue
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/tharun-ragu22/job_scheduler/internal/jobs"
 )
 
+type JobTestCase struct {
+    name string
+    job jobs.Job
+    expectedType reflect.Type
 
+}
 
-func Test_Enqueue_WhenEmailJobAddedToScheduler_JobAddedToScheduler(t *testing.T) {
-    // Given a user wants to send an email
-    scheduler := &Scheduler{}
+func Test_Enqueue_WhenJobAddedToScheduler_JobAddedToScheduler(t *testing.T) {
+    // Given a user wants to create a task
 
-    // When they submit a request to send an email
     emailJob := &jobs.EmailJob{
         To:      "user@example.com",
         Subject: "Test Email",
         Body:    "Hello World",
     }
 
-    scheduler.Enqueue(emailJob)
-
-	addedJob := scheduler.PeekTop()
-
-    // Then the system accepts the task and schedules it for processing
-    if addedJob == nil {
-		t.Fatalf("Expected a job to be added to the scheduler, got nil")
-	}
-
-    queuedJob, ok := (*addedJob).(*jobs.EmailJob)
-    if !ok {
-        t.Fatalf("Expected job to be of type *EmailJob")
+    apiJob := &jobs.APIJob{
+        URL:      "www.example.com",
+        Method: "POST",
     }
 
-    if queuedJob.To != "user@example.com" || queuedJob.Subject != "Test Email" {
-        t.Errorf("Queued job does not match submitted job")
+    testCases := []JobTestCase{
+        {
+            name: "Email Job",
+            job:          emailJob,
+            expectedType: reflect.TypeOf(&jobs.EmailJob{}),
+        },
+        {
+            name: "API Job",
+            job:          apiJob,
+            expectedType: reflect.TypeOf(&jobs.APIJob{}),
+        },
+    }
+
+    for _, tc := range testCases {
+    
+        scheduler := &Scheduler{}
+
+        // When they submit the required information for the task
+        scheduler.Enqueue(tc.job)
+
+        // Then the system accepts the task and schedules it for processing
+        addedJob := scheduler.PeekTop()
+
+        if addedJob == nil {
+            t.Fatalf("Expected a job to be added to the scheduler, got nil")
+        }
+        
+        if *addedJob != tc.job {
+            t.Errorf("Queued job does not match submitted job %s", tc.name)
+        }
     }
 }

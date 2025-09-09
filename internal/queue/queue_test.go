@@ -28,6 +28,12 @@ func Test_Enqueue_WhenJobAddedToScheduler_JobAddedToScheduler(t *testing.T) {
         Method: "POST",
     }
 
+    cronJob := &jobs.CronJob{
+        ID: 1,
+        Schedule: "0 0 * * *",
+        Task:     "backup_database.sh",
+    }
+
     testCases := []JobTestCase{
         {
             name: "Email Job",
@@ -38,6 +44,11 @@ func Test_Enqueue_WhenJobAddedToScheduler_JobAddedToScheduler(t *testing.T) {
             name: "API Job",
             job:          apiJob,
             expectedType: reflect.TypeOf(&jobs.APIJob{}),
+        },
+        {
+            name: "CRON Job",
+            job:          cronJob,
+            expectedType: reflect.TypeOf(&jobs.CronJob{}),
         },
     }
 
